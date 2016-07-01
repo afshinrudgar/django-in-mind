@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# sqlite3 database
+*.sqlite3
+
+# autosave
+*.autosave
