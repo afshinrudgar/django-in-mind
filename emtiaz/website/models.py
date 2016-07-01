@@ -19,6 +19,7 @@ class RateField(models.IntegerField):
 
 class User(models.Model):
   username = models.CharField(max_length=30)
+  password = models.CharField(max_length=100)
   name = models.CharField(max_length=50)
   bio = models.CharField(max_length=200, null=True)
 
@@ -53,7 +54,7 @@ class Place(models.Model):
     super(Place, self).save(*args, **kwargs)
 
 
-class Rating(models.Model):
+class Review(models.Model):
   by = models.ForeignKey(User)
   about = models.ForeignKey(Place)
   text = models.CharField(max_length=1000)

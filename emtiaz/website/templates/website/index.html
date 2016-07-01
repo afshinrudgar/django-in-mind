@@ -1,0 +1,22 @@
+{% extends 'website/base.html' %}
+{% block content %}
+  {% if latest_reviews %}
+    <ul>
+      {% for review in latest_reviews  %}
+        <li>
+          <p>
+            <a href="{% url 'website:user' review.by.username %}">{{ review.by }}</a>
+            on <a href="{% url 'website:place' review.about.uri %}">{{review.about}}</a>
+            ( {{ review.date }} ) 
+          </p>
+          <p><b>{{review.rate}}/10</b></p>
+          <p>{{ review.text }}</p>
+          {% if review.image %}
+            {% load staticfiles %}
+            <img src="/static/website/{{review.image}}" alt='{{ review.rate }}'/>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}
