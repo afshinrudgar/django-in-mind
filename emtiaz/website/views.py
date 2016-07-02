@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.views import generic
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 from django.template import loader
 
 from .models import Place, User, Review
@@ -45,3 +47,35 @@ def login(req):
     return redirect('website:home')
   else:
     return render(req, 'website/login.html')
+
+
+class HomeView(generic.ListView):
+  template_name = 'website/index.html'
+  context_object_name = 'latest_reviews'
+
+  def get_queryset(self):
+    ''' return last 10 review of all '''
+    return Review.objects.order_by('-date')[:10]
+
+
+# useless generic view
+# below views doesn't work :)
+
+class PlaceView(generic.DetailView):
+  model = Place
+  template_name = 'website/index.html'
+
+
+class UserView(generic.ListView):
+  ''' 
+  is this supposed to be a ListView or generic Views have some limitation
+  or just I too noob for this?!
+  '''
+  template_name = 'website/index.html'
+  context_object_name = 'latest_reviews'
+
+  def get_queryset(self):
+    ''' is there a way to get username here ans return a list of objects '''
+    return User.objects.get(username=username).review_set.order_by('-date')[:10]
+
+# end of useless views
